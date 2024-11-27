@@ -221,6 +221,9 @@ public class Controller implements AsyncProcessor {
             case ControlMessage.TYPE_OPEN_HARD_KEYBOARD_SETTINGS:
                 openHardKeyboardSettings();
                 break;
+            case ControlMessage.TYPE_GET_CURRENT_TIME:
+                getCurrentTime();
+                break;
             default:
                 // do nothing
         }
@@ -464,5 +467,10 @@ public class Controller implements AsyncProcessor {
     private void openHardKeyboardSettings() {
         Intent intent = new Intent("android.settings.HARD_KEYBOARD_SETTINGS");
         ServiceManager.getActivityManager().startActivity(intent);
+    }
+
+    private void getCurrentTime() {
+        DeviceMessage msg = DeviceMessage.createCurrentTime(System.currentTimeMillis());
+        sender.send(msg);
     }
 }

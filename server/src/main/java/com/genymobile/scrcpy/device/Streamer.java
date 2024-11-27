@@ -96,7 +96,7 @@ public final class Streamer {
         if (config) {
             ptsAndFlags = PACKET_FLAG_CONFIG; // non-media data packet
         } else {
-            ptsAndFlags = pts;
+            ptsAndFlags = System.currentTimeMillis(); //TODO
             if (keyFrame) {
                 ptsAndFlags |= PACKET_FLAG_KEY_FRAME;
             }

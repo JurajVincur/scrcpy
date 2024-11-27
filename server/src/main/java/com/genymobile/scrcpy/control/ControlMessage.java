@@ -23,6 +23,7 @@ public final class ControlMessage {
     public static final int TYPE_UHID_INPUT = 13;
     public static final int TYPE_UHID_DESTROY = 14;
     public static final int TYPE_OPEN_HARD_KEYBOARD_SETTINGS = 15;
+    public static final int TYPE_GET_CURRENT_TIME = 16;
 
     public static final long SEQUENCE_INVALID = 0;
 

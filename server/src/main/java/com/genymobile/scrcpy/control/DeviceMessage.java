@@ -5,6 +5,7 @@ public final class DeviceMessage {
     public static final int TYPE_CLIPBOARD = 0;
     public static final int TYPE_ACK_CLIPBOARD = 1;
     public static final int TYPE_UHID_OUTPUT = 2;
+    public static final int TYPE_CURRENT_TIME = 3;
 
     private int type;
     private String text;
@@ -26,6 +27,13 @@ public final class DeviceMessage {
         DeviceMessage event = new DeviceMessage();
         event.type = TYPE_ACK_CLIPBOARD;
         event.sequence = sequence;
+        return event;
+    }
+
+    public static DeviceMessage createCurrentTime(long timeMs) {
+        DeviceMessage event = new DeviceMessage();
+        event.type = TYPE_CURRENT_TIME;
+        event.sequence = timeMs;
         return event;
     }
 

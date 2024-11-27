@@ -33,6 +33,9 @@ public class DeviceMessageWriter {
             case DeviceMessage.TYPE_ACK_CLIPBOARD:
                 dos.writeLong(msg.getSequence());
                 break;
+            case DeviceMessage.TYPE_CURRENT_TIME:
+                dos.writeLong(msg.getSequence());
+                break;
             case DeviceMessage.TYPE_UHID_OUTPUT:
                 dos.writeShort(msg.getId());
                 byte[] data = msg.getData();
