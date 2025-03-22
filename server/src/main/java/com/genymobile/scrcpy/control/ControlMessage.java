@@ -17,13 +17,15 @@ public final class ControlMessage {
     public static final int TYPE_COLLAPSE_PANELS = 7;
     public static final int TYPE_GET_CLIPBOARD = 8;
     public static final int TYPE_SET_CLIPBOARD = 9;
-    public static final int TYPE_SET_SCREEN_POWER_MODE = 10;
+    public static final int TYPE_SET_DISPLAY_POWER = 10;
     public static final int TYPE_ROTATE_DEVICE = 11;
     public static final int TYPE_UHID_CREATE = 12;
     public static final int TYPE_UHID_INPUT = 13;
     public static final int TYPE_UHID_DESTROY = 14;
     public static final int TYPE_OPEN_HARD_KEYBOARD_SETTINGS = 15;
-    public static final int TYPE_GET_CURRENT_TIME = 16;
+    public static final int TYPE_START_APP = 16;
+    public static final int TYPE_RESET_VIDEO = 17;
+    public static final int TYPE_GET_CURRENT_TIME = 18;
 
     public static final long SEQUENCE_INVALID = 0;
 
@@ -34,7 +36,7 @@ public final class ControlMessage {
     private int type;
     private String text;
     private int metaState; // KeyEvent.META_*
-    private int action; // KeyEvent.ACTION_* or MotionEvent.ACTION_* or POWER_MODE_*
+    private int action; // KeyEvent.ACTION_* or MotionEvent.ACTION_*
     private int keycode; // KeyEvent.KEYCODE_*
     private int actionButton; // MotionEvent.BUTTON_*
     private int buttons; // MotionEvent.BUTTON_*
@@ -49,6 +51,9 @@ public final class ControlMessage {
     private long sequence;
     private int id;
     private byte[] data;
+    private boolean on;
+    private int vendorId;
+    private int productId;
 
     private ControlMessage() {
     }
@@ -116,13 +121,10 @@ public final class ControlMessage {
         return msg;
     }
 
-    /**
-     * @param mode one of the {@code Device.SCREEN_POWER_MODE_*} constants
-     */
-    public static ControlMessage createSetScreenPowerMode(int mode) {
+    public static ControlMessage createSetDisplayPower(boolean on) {
         ControlMessage msg = new ControlMessage();
-        msg.type = TYPE_SET_SCREEN_POWER_MODE;
-        msg.action = mode;
+        msg.type = TYPE_SET_DISPLAY_POWER;
+        msg.on = on;
         return msg;
     }
 
@@ -132,10 +134,12 @@ public final class ControlMessage {
         return msg;
     }
 
-    public static ControlMessage createUhidCreate(int id, String name, byte[] reportDesc) {
+    public static ControlMessage createUhidCreate(int id, int vendorId, int productId, String name, byte[] reportDesc) {
         ControlMessage msg = new ControlMessage();
         msg.type = TYPE_UHID_CREATE;
         msg.id = id;
+        msg.vendorId = vendorId;
+        msg.productId = productId;
         msg.text = name;
         msg.data = reportDesc;
         return msg;
@@ -153,6 +157,13 @@ public final class ControlMessage {
         ControlMessage msg = new ControlMessage();
         msg.type = TYPE_UHID_DESTROY;
         msg.id = id;
+        return msg;
+    }
+
+    public static ControlMessage createStartApp(String name) {
+        ControlMessage msg = new ControlMessage();
+        msg.type = TYPE_START_APP;
+        msg.text = name;
         return msg;
     }
 
@@ -226,5 +237,17 @@ public final class ControlMessage {
 
     public byte[] getData() {
         return data;
+    }
+
+    public boolean getOn() {
+        return on;
+    }
+
+    public int getVendorId() {
+        return vendorId;
+    }
+
+    public int getProductId() {
+        return productId;
     }
 }
