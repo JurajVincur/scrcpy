@@ -407,7 +407,7 @@ public class Controller implements AsyncProcessor, VirtualDisplayListener {
                     return true;
                 case ControlMessage.TYPE_GET_CURRENT_TIME:
                     getCurrentTime();
-                    break;
+                    return true;
                 case ControlMessage.TYPE_START_APP:
                     startAppAsync(msg.getText());
                     return true;
