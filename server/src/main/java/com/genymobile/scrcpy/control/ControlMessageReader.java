@@ -1,6 +1,6 @@
 package com.genymobile.scrcpy.control;
 
-import com.genymobile.scrcpy.device.Position;
+import com.genymobile.scrcpy.model.Position;
 import com.genymobile.scrcpy.util.Binary;
 
 import java.io.BufferedInputStream;
@@ -48,6 +48,8 @@ public class ControlMessageReader {
             case ControlMessage.TYPE_OPEN_HARD_KEYBOARD_SETTINGS:
             case ControlMessage.TYPE_RESET_VIDEO:
             case ControlMessage.TYPE_GET_CURRENT_TIME:
+            case ControlMessage.TYPE_CAMERA_ZOOM_IN:
+            case ControlMessage.TYPE_CAMERA_ZOOM_OUT:
                 return ControlMessage.createEmpty(type);
             case ControlMessage.TYPE_UHID_CREATE:
                 return parseUhidCreate();
@@ -57,6 +59,10 @@ public class ControlMessageReader {
                 return parseUhidDestroy();
             case ControlMessage.TYPE_START_APP:
                 return parseStartApp();
+            case ControlMessage.TYPE_CAMERA_SET_TORCH:
+                return parseCameraSetTorch();
+            case ControlMessage.TYPE_RESIZE_DISPLAY:
+                return parseResizeDisplay();
             default:
                 throw new ControlProtocolException("Unknown event type: " + type);
         }
@@ -165,6 +171,17 @@ public class ControlMessageReader {
     private ControlMessage parseStartApp() throws IOException {
         String name = parseString(1);
         return ControlMessage.createStartApp(name);
+    }
+
+    private ControlMessage parseCameraSetTorch() throws IOException {
+        boolean on = dis.readBoolean();
+        return ControlMessage.createCameraSetTorch(on);
+    }
+
+    private ControlMessage parseResizeDisplay() throws IOException {
+        int width = dis.readUnsignedShort();
+        int height = dis.readUnsignedShort();
+        return ControlMessage.createResizeDisplay(width, height);
     }
 
     private Position parsePosition() throws IOException {
